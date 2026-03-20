@@ -1,10 +1,11 @@
 import { Lock, Mail, User } from "lucide-react";
-import logo from "../../../assets/logo.png";
-import RightImage from "../../../assets/auth/right-image.png";
 import { AuthInput } from "../../../components/auth/AuthInput";
 import { AuthCheckBox } from "../../../components/auth/AuthCheckBox";
+import logo from "../../../assets/logo.png";
+import RightImage from "../../../assets/auth/right-image.png";
+import GoogleIcon from "../../../assets/auth/google-icon.png";
 
-const Login = () => {
+const Register = () => {
   return (
     <main className="grid grid-cols-1 lg:grid-cols-2 min-h-screen bg-background ">
       <section className="flex flex-col h-full">
@@ -14,9 +15,9 @@ const Login = () => {
           </div>
 
           <nav className="flex items-center gap-6">
-            <p className="text-text/70">Já possui uma conta?</p>
+            <p className="text-text/70">Já tem uma conta?</p>
             <a href="/login" className="text-primary hover:opacity-80">
-              Login
+              Entrar
             </a>
           </nav>
         </header>
@@ -29,10 +30,8 @@ const Login = () => {
               </div>
 
               <div className="flex flex-col items-center text-center">
-                <h1 className="text-3xl font-bold text-text">
-                  Crie sua nova conta
-                </h1>
-                <p className="text-text/60">Insira suas informações</p>
+                <h1 className="text-3xl font-bold text-text">Crie sua conta</h1>
+                <p className="text-text/60">Preencha os dados abaixo</p>
               </div>
             </header>
 
@@ -41,14 +40,14 @@ const Login = () => {
                 label={"Nome completo"}
                 type={"text"}
                 id={"name"}
-                placeholder={"Seu Nome"}
+                placeholder={"João Silva"}
                 icon={<User size={18} />}
               />
 
               <AuthInput
-                label={"Email"}
+                label={"E-mail"}
                 type={"email"}
-                placeholder={"seuemail@gmail.com"}
+                placeholder={"seu@email.com"}
                 icon={<Mail size={18} />}
               />
 
@@ -72,8 +71,20 @@ const Login = () => {
                 className="bg-primary hover:opacity-90 text-white py-2 w-full rounded-md transition cursor-pointer"
                 type="submit"
               >
-                Crie sua conta
+                Criar conta
               </button>
+
+              <div className="flex items-center gap-3">
+                <hr className="flex-1 border-text/20" />
+                <p className="text-text/60 text-sm">ou</p>
+                <hr className="flex-1 border-text/20" />
+              </div>
+
+              <div className="flex items-center justify-center items-center">
+                <div className="flex w-32 h-17 bg-bg justify-center items-center border border-text/20 rounded-md cursor-pointer">
+                  <img src={GoogleIcon} alt="Ícone Google" width={"25%"} />
+                </div>
+              </div>
             </form>
           </article>
         </div>
@@ -92,4 +103,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
