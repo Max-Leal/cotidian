@@ -15,9 +15,9 @@ const Register = () => {
           </div>
 
           <nav className="flex items-center gap-6">
-            <p className="text-text/70">Já tem uma conta?</p>
-            <a href="/login" className="text-primary hover:opacity-80">
-              Entrar
+            <p className="text-text/70">Não tem uma conta?</p>
+            <a href="/register" className="text-primary hover:opacity-80">
+              Criar conta
             </a>
           </nav>
         </header>
@@ -30,20 +30,14 @@ const Register = () => {
               </div>
 
               <div className="flex flex-col items-center text-center">
-                <h1 className="text-3xl font-bold text-text">Crie sua conta</h1>
-                <p className="text-text/60">Preencha os dados abaixo</p>
+                <h1 className="text-3xl font-bold text-text">
+                  Bem-vindo de volta
+                </h1>
+                <p className="text-text/60">Acesse sua conta para continuar</p>
               </div>
             </header>
 
             <form className="flex flex-col gap-4 w-full">
-              <AuthInput
-                label={"Nome completo"}
-                type={"text"}
-                id={"name"}
-                placeholder={"João Silva"}
-                icon={<User size={18} />}
-              />
-
               <AuthInput
                 label={"E-mail"}
                 type={"email"}
@@ -58,20 +52,13 @@ const Register = () => {
                 icon={<Lock size={18} />}
               />
 
-              <AuthInput
-                label={"Confirmar Senha"}
-                type={"password"}
-                placeholder={"••••••••"}
-                icon={<Lock size={18} />}
-              />
-
               <AuthCheckBox />
 
               <button
                 className="bg-primary hover:opacity-90 text-white py-2 w-full rounded-md transition cursor-pointer"
                 type="submit"
               >
-                Criar conta
+                Entrar
               </button>
 
               <div className="flex items-center gap-3">
