@@ -1,4 +1,4 @@
-import { Lock, Mail, User } from "lucide-react";
+import { Lock, Mail, User, UserPlus } from "lucide-react";
 import { AuthInput } from "../../../components/auth/AuthInput";
 import { AuthCheckBox } from "../../../components/auth/AuthCheckBox";
 import logo from "../../../assets/logo.png";
@@ -26,7 +26,7 @@ const Register = () => {
           <article className="flex flex-col items-center w-full max-w-md px-5">
             <header className="flex flex-col items-center gap-6 w-full mb-6">
               <div className="bg-light border border-light p-5 rounded-full">
-                <User className="text-support" />
+                <UserPlus className="text-support" />
               </div>
 
               <div className="flex flex-col items-center text-center">
