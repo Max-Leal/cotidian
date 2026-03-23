@@ -1,12 +1,9 @@
-import { Mail, UserLock } from "lucide-react";
+import { Lock, UserLock } from "lucide-react";
 import { AuthInput } from "../../../components/auth/AuthInput";
 import logo from "../../../assets/logo.png";
 import RightImage from "../../../assets/auth/right-image.png";
-import { useNavigate } from "react-router-dom";
 
-const ForgotPassword = () => {
-  const navigate = useNavigate();
-
+const NewPassword = () => {
   return (
     <main className="grid grid-cols-1 lg:grid-cols-2 min-h-screen bg-background ">
       <section className="flex flex-col h-full">
@@ -31,33 +28,34 @@ const ForgotPassword = () => {
 
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-3xl font-bold text-text">
-                  Esqueceu sua senha?
+                  Crie uma nova senha
                 </h1>
                 <p className="text-text/60">
-                  Digite seu e-mail para receber o link de recuperação
+                  Digite e confirme sua nova senha para continuar
                 </p>
               </div>
             </header>
 
-            <form
-              className="flex flex-col gap-4 w-full"
-              onSubmit={(e) => {
-                e.preventDefault();
-                navigate("/new-password");
-              }}
-            >
+            <form className="flex flex-col gap-4 w-full">
               <AuthInput
-                label={"E-mail"}
-                type={"email"}
-                placeholder={"seu@email.com"}
-                icon={<Mail size={18} />}
+                label={"Nova senha"}
+                type={"password"}
+                placeholder={"Digite sua nova senha"}
+                icon={<Lock size={18} />}
+              />
+
+              <AuthInput
+                label={"Confirmar senha"}
+                type={"password"}
+                placeholder={"Confirme sua nova senha"}
+                icon={<Lock size={18} />}
               />
 
               <button
                 className="bg-primary hover:opacity-90 text-white py-2 w-full rounded-md transition cursor-pointer"
                 type="submit"
               >
-                Enviar link de recuperação
+                Salvar nova senha
               </button>
             </form>
           </article>
@@ -77,4 +75,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default NewPassword;
