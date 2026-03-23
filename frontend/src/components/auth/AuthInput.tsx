@@ -6,6 +6,8 @@ interface IAuthInput {
   placeholder: string;
   icon: ReactNode;
   id?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const AuthInput = ({
@@ -14,6 +16,8 @@ export const AuthInput = ({
   placeholder,
   id,
   icon,
+  value,
+  onChange,
 }: IAuthInput) => {
   return (
     <div className="flex flex-col w-full">
@@ -28,9 +32,13 @@ export const AuthInput = ({
 
         <input
           className="border border-text/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none px-3 py-2 w-full rounded-lg pl-10"
+          required
           id={id || type}
           type={type}
+          name={id || type}
           placeholder={placeholder}
+          value={value}
+          onChange={onChange}
         />
       </div>
     </div>

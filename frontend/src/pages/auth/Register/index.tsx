@@ -1,11 +1,47 @@
-import { Lock, Mail, User, UserPlus } from "lucide-react";
+import { EthernetPort, Lock, Mail, User, UserPlus } from "lucide-react";
 import { AuthInput } from "../../../components/auth/AuthInput";
 import { AuthCheckBox } from "../../../components/auth/AuthCheckBox";
 import logo from "../../../assets/logo.png";
 import RightImage from "../../../assets/auth/right-image.png";
 import GoogleIcon from "../../../assets/auth/google-icon.png";
+import { useState } from "react";
+import axios from "axios";
 
 const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  async function handleForm(e) {
+    e.preventDefault();
+
+    if (password != confirmPassword) {
+      // aqui vai ter a mensagem de senha diferente
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:3000/register", {
+        name,
+        email,
+        password,
+      });
+
+      console.log(response.data);
+
+      // ir para a pagina de home quando tiver
+    } catch (error) {
+      console.error(error);
+
+      if (error.response) {
+        alert(error.response.data.message);
+      } else {
+        alert("Erro ao conectar com o servidor");
+      }
+    }
+  }
+
   return (
     <main className="grid grid-cols-1 lg:grid-cols-2 min-h-screen bg-background ">
       <section className="flex flex-col h-full">
@@ -35,34 +71,45 @@ const Register = () => {
               </div>
             </header>
 
-            <form className="flex flex-col gap-4 w-full">
+            <form className="flex flex-col gap-4 w-full" onSubmit={handleForm}>
               <AuthInput
                 label={"Nome completo"}
                 type={"text"}
                 id={"name"}
                 placeholder={"João Silva"}
                 icon={<User size={18} />}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
 
               <AuthInput
-                label={"E-mail"}
-                type={"email"}
-                placeholder={"seu@email.com"}
+                label="E-mail"
+                type="email"
+                id="email"
+                placeholder="seu@email.com"
                 icon={<Mail size={18} />}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
 
               <AuthInput
-                label={"Senha"}
-                type={"password"}
-                placeholder={"••••••••"}
+                label="Senha"
+                type="password"
+                id="password"
+                placeholder="••••••••"
                 icon={<Lock size={18} />}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
 
               <AuthInput
-                label={"Confirmar Senha"}
-                type={"password"}
-                placeholder={"••••••••"}
+                label="Confirmar Senha"
+                type="password"
+                id="confirmPassword"
+                placeholder="••••••••"
                 icon={<Lock size={18} />}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
 
               <AuthCheckBox />
@@ -80,7 +127,7 @@ const Register = () => {
                 <hr className="flex-1 border-text/20" />
               </div>
 
-              <div className="flex items-center justify-center items-center">
+              <div className="flex items-center justify-center">
                 <div className="flex w-32 h-17 bg-bg justify-center items-center border border-text/20 rounded-md cursor-pointer">
                   <img src={GoogleIcon} alt="Ícone Google" width={"25%"} />
                 </div>
