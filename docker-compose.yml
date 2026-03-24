@@ -1,0 +1,41 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cotidian-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    networks:
+      - front-network
+      - back-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cotidian-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - front-network
+
+  database:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    container_name: cotidian-db
+    ports:
+      - "5432:5432"
+    networks:
+      - back-network
+
+networks:
+  front-network:
+    driver: bridge
+  back-network:
+    driver: bridge
