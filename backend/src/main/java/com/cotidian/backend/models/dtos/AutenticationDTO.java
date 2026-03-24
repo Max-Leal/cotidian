@@ -1,4 +1,4 @@
 package com.cotidian.backend.models.dtos;
 
-public record AutenticationDTO(String login, String password) {
+public record AutenticationDTO(String email, String password) {
 }
