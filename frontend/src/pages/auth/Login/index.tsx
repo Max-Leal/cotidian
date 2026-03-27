@@ -4,8 +4,55 @@ import { AuthCheckBox } from "../../../components/auth/AuthCheckBox";
 import logo from "../../../assets/logo.png";
 import RightImage from "../../../assets/auth/right-image.png";
 import GoogleIcon from "../../../assets/auth/google-icon.png";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
 
-const Register = () => {
+const Login = () => {
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function handleForm(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (!email || !password) {
+      alert("Preencha todos os campos");
+      return;
+    }
+
+    if (password.length < 6) {
+      alert("A senha deve ter pelo menos 6 caracteres");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post("http://localhost:8080/auth/login", {
+        email,
+        password,
+      });
+
+      localStorage.setItem("token", response.data.token);
+
+      navigate("/");
+    } catch (error: unknown) {
+      console.error(error);
+
+      if (axios.isAxiosError(error)) {
+        alert(error.response?.data?.message || "Erro ao entrar");
+      } else {
+        alert("Erro ao conectar com o servidor");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <main className="grid grid-cols-1 lg:grid-cols-2 min-h-screen bg-background ">
       <section className="flex flex-col h-full">
@@ -37,12 +84,13 @@ const Register = () => {
               </div>
             </header>
 
-            <form className="flex flex-col gap-4 w-full">
+            <form className="flex flex-col gap-4 w-full" onSubmit={handleForm}>
               <AuthInput
                 label={"E-mail"}
                 type={"email"}
                 placeholder={"seu@email.com"}
                 icon={<Mail size={18} />}
+                onChange={(e) => setEmail(e.target.value)}
               />
 
               <AuthInput
@@ -50,6 +98,7 @@ const Register = () => {
                 type={"password"}
                 placeholder={"••••••••"}
                 icon={<Lock size={18} />}
+                onChange={(e) => setPassword(e.target.value)}
               />
 
               <div className="flex flex-row justify-between">
@@ -63,10 +112,11 @@ const Register = () => {
               </div>
 
               <button
+                disabled={loading}
                 className="bg-primary hover:opacity-90 text-white py-2 w-full rounded-md transition cursor-pointer"
                 type="submit"
               >
-                Entrar
+                {loading ? "Carregando..." : "Entrar"}
               </button>
 
               <div className="flex items-center gap-3">
@@ -98,4 +148,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;

@@ -1,4 +1,4 @@
-import { EthernetPort, Lock, Mail, User, UserPlus } from "lucide-react";
+import { Lock, Mail, User, UserPlus } from "lucide-react";
 import { AuthInput } from "../../../components/auth/AuthInput";
 import { AuthCheckBox } from "../../../components/auth/AuthCheckBox";
 import logo from "../../../assets/logo.png";
@@ -6,23 +6,40 @@ import RightImage from "../../../assets/auth/right-image.png";
 import GoogleIcon from "../../../assets/auth/google-icon.png";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  async function handleForm(e) {
+  async function handleForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (password != confirmPassword) {
-      // aqui vai ter a mensagem de senha diferente
+    if (password !== confirmPassword) {
+      alert("As senhas não coincidem");
       return;
     }
 
+    if (!name || !email || !password) {
+      alert("Preencha todos os campos");
+      return;
+    }
+
+    if (password.length < 6) {
+      alert("A senha deve ter pelo menos 6 caracteres");
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      const response = await axios.post("http://localhost:3000/register", {
+      const response = await axios.post("http://localhost:8080/auth/register", {
         name,
         email,
         password,
@@ -30,15 +47,17 @@ const Register = () => {
 
       console.log(response.data);
 
-      // ir para a pagina de home quando tiver
-    } catch (error) {
+      navigate("/login");
+    } catch (error: unknown) {
       console.error(error);
 
-      if (error.response) {
-        alert(error.response.data.message);
+      if (axios.isAxiosError(error)) {
+        alert(error.response?.data?.message || "Erro ao cadastrar");
       } else {
         alert("Erro ao conectar com o servidor");
       }
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -115,10 +134,11 @@ const Register = () => {
               <AuthCheckBox />
 
               <button
+                disabled={loading}
                 className="bg-primary hover:opacity-90 text-white py-2 w-full rounded-md transition cursor-pointer"
                 type="submit"
               >
-                Criar conta
+                {loading ? "Carregando..." : "Criar conta"}
               </button>
 
               <div className="flex items-center gap-3">
