@@ -1,17 +1,17 @@
 import { Lock, Mail, User, UserPlus } from "lucide-react";
 import { AuthInput } from "../../../components/auth/AuthInput";
 import { AuthCheckBox } from "../../../components/auth/AuthCheckBox";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo.png";
 import RightImage from "../../../assets/auth/right-image.png";
 import GoogleIcon from "../../../assets/auth/google-icon.png";
-import { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../hooks/auth/useAuth";
 
 const Register = () => {
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(false);
+  const { register, loading } = useAuth();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -19,15 +19,17 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   async function handleForm(e: React.FormEvent<HTMLFormElement>) {
+    if (loading) return;
+
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      alert("As senhas não coincidem");
+    if (!name || !email || !password || !confirmPassword) {
+      alert("Preencha todos os campos");
       return;
     }
 
-    if (!name || !email || !password) {
-      alert("Preencha todos os campos");
+    if (password !== confirmPassword) {
+      alert("As senhas não coincidem");
       return;
     }
 
@@ -36,28 +38,11 @@ const Register = () => {
       return;
     }
 
-    setLoading(true);
-
     try {
-      const response = await axios.post("http://localhost:8080/auth/register", {
-        name,
-        email,
-        password,
-      });
-
-      console.log(response.data);
-
+      await register(name, email, password);
       navigate("/login");
-    } catch (error: unknown) {
-      console.error(error);
-
-      if (axios.isAxiosError(error)) {
-        alert(error.response?.data?.message || "Erro ao cadastrar");
-      } else {
-        alert("Erro ao conectar com o servidor");
-      }
-    } finally {
-      setLoading(false);
+    } catch {
+      // erro já tratado no hook
     }
   }
 
@@ -71,9 +56,9 @@ const Register = () => {
 
           <nav className="flex items-center gap-6">
             <p className="text-text/70">Já tem uma conta?</p>
-            <a href="/login" className="text-primary hover:opacity-80">
+            <Link to="/login" className="text-primary hover:opacity-80">
               Entrar
-            </a>
+            </Link>
           </nav>
         </header>
 

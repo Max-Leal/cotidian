@@ -1,17 +1,16 @@
 import { Lock, Mail, User } from "lucide-react";
 import { AuthInput } from "../../../components/auth/AuthInput";
 import { AuthCheckBox } from "../../../components/auth/AuthCheckBox";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useAuth } from "../../../hooks/auth/useAuth";
 import logo from "../../../assets/logo.png";
 import RightImage from "../../../assets/auth/right-image.png";
 import GoogleIcon from "../../../assets/auth/google-icon.png";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
-
-  const [loading, setLoading] = useState(false);
+  const { login, loading } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,27 +28,14 @@ const Login = () => {
       return;
     }
 
-    setLoading(true);
-
     try {
-      const response = await axios.post("http://localhost:8080/auth/login", {
-        email,
-        password,
-      });
+      const response = await login(email, password);
 
-      localStorage.setItem("token", response.data.token);
-
-      navigate("/");
-    } catch (error: unknown) {
-      console.error(error);
-
-      if (axios.isAxiosError(error)) {
-        alert(error.response?.data?.message || "Erro ao entrar");
-      } else {
-        alert("Erro ao conectar com o servidor");
+      if (response) {
+        navigate("/");
       }
-    } finally {
-      setLoading(false);
+    } catch {
+      // erro já tratado no hook
     }
   }
 
@@ -63,9 +49,9 @@ const Login = () => {
 
           <nav className="flex items-center gap-6">
             <p className="text-text/70">Não tem uma conta?</p>
-            <a href="/register" className="text-primary hover:opacity-80">
+            <Link to="/register" className="text-primary hover:opacity-80">
               Criar conta
-            </a>
+            </Link>
           </nav>
         </header>
 
@@ -103,12 +89,12 @@ const Login = () => {
 
               <div className="flex flex-row justify-between">
                 <AuthCheckBox />
-                <a
-                  href="/forgot-password"
+                <Link
+                  to="/forgot-password"
                   className="text-text/70 hover:opacity-90 cursor-pointer"
                 >
                   Esqueceu sua senha?
-                </a>
+                </Link>
               </div>
 
               <button

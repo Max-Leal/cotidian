@@ -2,7 +2,7 @@ import { Mail, UserLock } from "lucide-react";
 import { AuthInput } from "../../../components/auth/AuthInput";
 import logo from "../../../assets/logo.png";
 import RightImage from "../../../assets/auth/right-image.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -16,9 +16,9 @@ const ForgotPassword = () => {
           </div>
 
           <nav className="flex items-center gap-6">
-            <a href="/register" className="text-primary hover:opacity-80">
+            <Link to="/login" className="text-primary hover:opacity-80">
               Voltar para login
-            </a>
+            </Link>
           </nav>
         </header>
 
