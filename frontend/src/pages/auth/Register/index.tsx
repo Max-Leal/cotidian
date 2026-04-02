@@ -1,44 +1,48 @@
-import { EthernetPort, Lock, Mail, User, UserPlus } from "lucide-react";
+import { Lock, Mail, User, UserPlus } from "lucide-react";
 import { AuthInput } from "../../../components/auth/AuthInput";
 import { AuthCheckBox } from "../../../components/auth/AuthCheckBox";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo.png";
 import RightImage from "../../../assets/auth/right-image.png";
 import GoogleIcon from "../../../assets/auth/google-icon.png";
-import { useState } from "react";
-import axios from "axios";
+import { useAuth } from "../../../hooks/auth/useAuth";
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const { register, loading } = useAuth();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  async function handleForm(e) {
+  async function handleForm(e: React.FormEvent<HTMLFormElement>) {
+    if (loading) return;
+
     e.preventDefault();
 
-    if (password != confirmPassword) {
-      // aqui vai ter a mensagem de senha diferente
+    if (!name || !email || !password || !confirmPassword) {
+      alert("Preencha todos os campos");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert("As senhas não coincidem");
+      return;
+    }
+
+    if (password.length < 6) {
+      alert("A senha deve ter pelo menos 6 caracteres");
       return;
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/register", {
-        name,
-        email,
-        password,
-      });
-
-      console.log(response.data);
-
-      // ir para a pagina de home quando tiver
-    } catch (error) {
-      console.error(error);
-
-      if (error.response) {
-        alert(error.response.data.message);
-      } else {
-        alert("Erro ao conectar com o servidor");
-      }
+      await register(name, email, password);
+      navigate("/login");
+    } catch {
+      // erro já tratado no hook
     }
   }
 
@@ -52,9 +56,9 @@ const Register = () => {
 
           <nav className="flex items-center gap-6">
             <p className="text-text/70">Já tem uma conta?</p>
-            <a href="/login" className="text-primary hover:opacity-80">
+            <Link to="/login" className="text-primary hover:opacity-80">
               Entrar
-            </a>
+            </Link>
           </nav>
         </header>
 
@@ -115,10 +119,11 @@ const Register = () => {
               <AuthCheckBox />
 
               <button
+                disabled={loading}
                 className="bg-primary hover:opacity-90 text-white py-2 w-full rounded-md transition cursor-pointer"
                 type="submit"
               >
-                Criar conta
+                {loading ? "Carregando..." : "Criar conta"}
               </button>
 
               <div className="flex items-center gap-3">
