@@ -1,4 +1,4 @@
-package com.cotidian.backend.models.dtos;
+package com.cotidian.backend.dto;
 
 public record RegisterDTO(String name, String email, String password) {
 }

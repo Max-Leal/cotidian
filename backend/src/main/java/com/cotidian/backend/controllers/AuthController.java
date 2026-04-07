@@ -1,11 +1,11 @@
 package com.cotidian.backend.controllers;
 
-import com.cotidian.backend.models.User;
-import com.cotidian.backend.models.dtos.AutenticationDTO;
-import com.cotidian.backend.models.dtos.LoginResponseDTO;
-import com.cotidian.backend.models.dtos.RegisterDTO;
-import com.cotidian.backend.repositories.UserRepository;
-import com.cotidian.backend.services.TokenService;
+import com.cotidian.backend.database.models.UserEntity;
+import com.cotidian.backend.dto.AutenticationDTO;
+import com.cotidian.backend.dto.LoginResponseDTO;
+import com.cotidian.backend.dto.RegisterDTO;
+import com.cotidian.backend.database.models.repositories.UserRepository;
+import com.cotidian.backend.service.TokenService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,7 +33,7 @@ public class AuthController {
     public ResponseEntity login(@RequestBody AutenticationDTO dto){
         var userPassword = new UsernamePasswordAuthenticationToken(dto.email(), dto.password());
         var auth = authenticationManager.authenticate(userPassword);
-        var token = tokenService.generateToken((User) auth.getPrincipal());
+        var token = tokenService.generateToken((UserEntity) auth.getPrincipal());
 
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
@@ -45,7 +45,7 @@ public class AuthController {
         }
 
         String encryptedPassword = passwordEncoder.encode(dto.password());
-        User user =  new User(dto.name(), dto.email(), encryptedPassword, null);
+        UserEntity user =  new UserEntity(dto.name(), dto.email(), encryptedPassword, null);
         userRepository.save(user);
         return ResponseEntity.ok().build();
 

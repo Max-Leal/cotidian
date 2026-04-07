@@ -1,7 +1,7 @@
 package com.cotidian.backend.infra.security;
 
-import com.cotidian.backend.repositories.UserRepository;
-import com.cotidian.backend.services.TokenService;
+import com.cotidian.backend.database.models.repositories.UserRepository;
+import com.cotidian.backend.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

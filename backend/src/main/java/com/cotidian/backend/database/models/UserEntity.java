@@ -1,10 +1,6 @@
-package com.cotidian.backend.models;
+package com.cotidian.backend.database.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,33 +16,35 @@ import java.util.List;
 @Entity(name = "users")
 @Getter
 @Setter
-public class User implements UserDetails {
+public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    public User() {
+    public UserEntity() {
     }
 
-    public User(String name, String email, String encryptedPassword, LocalDateTime createdAt) {
+    public UserEntity(String name, String email, String encryptedPassword, LocalDateTime createdAt) {
         this.name = name;
         this.email = email;
         this.password = encryptedPassword;
         this.createdAt = createdAt;
     }
 
-    public User(Long id, String name, String email, String password) {
+    public UserEntity(Long id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
