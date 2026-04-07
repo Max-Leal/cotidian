@@ -43,9 +43,14 @@ services:
       start_period: 10s
     networks:
       - back-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
 networks:
   front-network:
     driver: bridge
   back-network:
     driver: bridge
+
+volumes:
+  postgres_data:
