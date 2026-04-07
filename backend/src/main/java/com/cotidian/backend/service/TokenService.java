@@ -21,7 +21,9 @@ public class TokenService {
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
+                    // The issuer identifies which application generated the token.
                     .withIssuer("auth-desvs2blu-api")
+                    // The subject is the identity we recover later in the security filter.
                     .withSubject(user.getUsername())
                     .withExpiresAt(generationExpirationDate())
                     .sign(algorithm);
@@ -45,6 +47,7 @@ public class TokenService {
     }
 
     private Instant generationExpirationDate() {
+        // This token remains valid for 2 hours after login.
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 }
