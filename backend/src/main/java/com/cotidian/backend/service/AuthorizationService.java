@@ -1,6 +1,6 @@
-package com.cotidian.backend.services;
+package com.cotidian.backend.service;
 
-import com.cotidian.backend.repositories.UserRepository;
+import com.cotidian.backend.database.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

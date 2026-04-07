@@ -1,53 +1,52 @@
 package com.cotidian.backend.controllers;
 
-import com.cotidian.backend.models.User;
-import com.cotidian.backend.models.dtos.AutenticationDTO;
-import com.cotidian.backend.models.dtos.LoginResponseDTO;
-import com.cotidian.backend.models.dtos.RegisterDTO;
-import com.cotidian.backend.repositories.UserRepository;
-import com.cotidian.backend.services.TokenService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import com.cotidian.backend.dto.AutenticationDTO;
+import com.cotidian.backend.dto.LoginResponseDTO;
+import com.cotidian.backend.dto.RegisterDTO;
+import com.cotidian.backend.exception.BadRequestException;
+import com.cotidian.backend.service.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/v1/auth")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
+@Validated
+@Tag(name = "Authentication", description = "Endpoints for register and login")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final TokenService tokenService;
-
-    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, TokenService tokenService){
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.tokenService = tokenService;
-    }
+    private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody AutenticationDTO dto){
-        var userPassword = new UsernamePasswordAuthenticationToken(dto.email(), dto.password());
-        var auth = authenticationManager.authenticate(userPassword);
-        var token = tokenService.generateToken((User) auth.getPrincipal());
-
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "Authenticate a user",
+            description = "Send a POST with email and password. If the credentials are valid, the API returns a JWT token."
+    )
+    @CrossOrigin("*")
+    public LoginResponseDTO login(@Valid @RequestBody AutenticationDTO dto) {
+        return authService.login(dto);
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody RegisterDTO dto){
-        if (this.userRepository.existsByEmail(dto.email())) {
-            return ResponseEntity.badRequest().body("Email already in use");
-        }
-
-        String encryptedPassword = passwordEncoder.encode(dto.password());
-        User user =  new User(dto.name(), dto.email(), encryptedPassword, null);
-        userRepository.save(user);
-        return ResponseEntity.ok().build();
-
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(
+            summary = "Register a new user",
+            description = "Example POST body: {\"name\":\"Max\",\"email\":\"max@email.com\",\"password\":\"123456\"}"
+    )
+    @CrossOrigin("*")
+    public void register(@Valid @RequestBody RegisterDTO dto) throws BadRequestException {
+        authService.register(dto);
     }
 }

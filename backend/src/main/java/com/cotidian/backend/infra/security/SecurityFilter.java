@@ -1,7 +1,7 @@
 package com.cotidian.backend.infra.security;
 
-import com.cotidian.backend.repositories.UserRepository;
-import com.cotidian.backend.services.TokenService;
+import com.cotidian.backend.database.repository.UserRepository;
+import com.cotidian.backend.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,12 +26,18 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // For protected routes, the client sends the token in:
+        // Authorization: Bearer <jwt>
         String token = recoverToken(request);
         if (token != null) {
+            // The JWT subject contains the user's email.
+            // If the token is valid, we use that email to load the user from the database.
             String subject = tokenService.validateToken(token);
             if (subject != null) {
                 var userDetails = userRepository.findByEmail(subject);
                 if (userDetails != null) {
+                    // This tells Spring Security that the request is authenticated.
+                    // After that, controllers can read the logged user with @AuthenticationPrincipal.
                     var authentication = new UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,
