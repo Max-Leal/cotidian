@@ -23,7 +23,11 @@ const Sidebar = ({ children }: SidebarProps) => {
   const [expanded, setExpanded] = useState(true);
 
   return (
-    <aside className="h-screen bg-background border-r border-text/10 shadow-sm">
+    <aside
+      className={`min-h-screen shrink-0 border-r border-text/10 bg-background shadow-sm transition-all duration-300 ${
+        expanded ? "w-64" : "w-20"
+      }`}
+    >
       <nav className="h-full flex flex-col">
         <div
           className={`p-4 pb-4 flex items-center ${expanded ? "justify-between gap-3" : "justify-center"}`}
@@ -46,7 +50,7 @@ const Sidebar = ({ children }: SidebarProps) => {
         </div>
 
         <SidebarContext.Provider value={{ expanded }}>
-          <ul className="flex-1 px-3">{children}</ul>
+          <ul className="flex-1 px-3 py-2">{children}</ul>
         </SidebarContext.Provider>
       </nav>
     </aside>
@@ -72,9 +76,8 @@ export function SidebarItem({
   return (
     <li
       className={`
-        relative flex items-center py-2 px-3 my-1
-        font-medium rounded-md cursor-pointer
-        transition-colors
+        relative my-1 flex h-12 items-center overflow-hidden rounded-xl px-3
+        font-medium cursor-pointer transition-all
         ${
           active
             ? "bg-light text-text"
@@ -82,15 +85,25 @@ export function SidebarItem({
         }
     `}
     >
-      <span className="text-support">{icon}</span>
       <span
-        className={`overflow-hidden whitespace-nowrap transition-all ${expanded ? "md:w-52 ml-3" : "w-0"}`}
+        className={`flex shrink-0 items-center justify-center text-support ${
+          expanded ? "h-9 w-9" : "h-full w-full"
+        }`}
+      >
+        {icon}
+      </span>
+      <span
+        className={`overflow-hidden whitespace-nowrap text-sm transition-all ${
+          expanded ? "ml-3 w-40 opacity-100" : "ml-0 w-0 opacity-0"
+        }`}
       >
         {text}
       </span>
       {alert && (
         <div
-          className={`absolute right-2 w-2 h-2 rounded bg-primary ${expanded ? "" : "top-2"}`}
+          className={`absolute h-2 w-2 rounded bg-primary ${
+            expanded ? "right-3 top-1/2 -translate-y-1/2" : "right-3 top-3"
+          }`}
         />
       )}
     </li>
