@@ -1,5 +1,6 @@
 import { CheckCircle, Home, Layers, TrendingUp } from "lucide-react";
 import Sidebar, { SidebarItem } from "../../components/layout/Sidebar";
+import { HeaderSection } from "../../components/home/HeaderSection";
 
 const HomePage = () => {
   return (
@@ -13,10 +14,7 @@ const HomePage = () => {
 
       <main className="flex-1 p-4">
         <div className="flex min-h-[calc(100vh-2rem)] flex-col gap-4">
-          <header className="flex min-h-18 items-center justify-end gap-6 rounded-2xl border border-text/10 bg-white px-6 shadow-sm">
-            <p className="font-semibold">Notificações</p>
-            <p className="font-semibold">Nome e Foto de Perfil</p>
-          </header>
+          <HeaderSection />
 
           <div className="grid flex-1 gap-4 lg:grid-cols-[minmax(0,2.2fr)_minmax(280px,1fr)]">
             <section className="grid gap-4 lg:grid-rows-[minmax(180px,1.2fr)_72px_72px_minmax(260px,1.8fr)]">
