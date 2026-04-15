@@ -1,6 +1,7 @@
 import { CheckCircle, Home, Layers, TrendingUp } from "lucide-react";
 import Sidebar, { SidebarItem } from "../../components/layout/Sidebar";
 import { HeaderSection } from "../../components/home/HeaderSection";
+import { SliderComponent } from "../../components/home/SliderComponent";
 
 const HomePage = () => {
   return (
@@ -18,12 +19,7 @@ const HomePage = () => {
 
           <div className="grid flex-1 gap-4 lg:grid-cols-[minmax(0,2.2fr)_minmax(280px,1fr)]">
             <section className="grid gap-4 lg:grid-rows-[minmax(180px,1.2fr)_72px_72px_minmax(260px,1.8fr)]">
-              <div className="flex items-center justify-center rounded-2xl border border-text/10 bg-white p-6 text-center font-semibold shadow-sm">
-                <div>
-                  <p>carrossel de imagens do cotidian</p>
-                  <p>(divulgação de planos, features etc.)</p>
-                </div>
-              </div>
+              <SliderComponent />
 
               <div className="grid gap-4 sm:grid-cols-3">
                 <div className="flex items-center justify-center rounded-2xl border border-text/10 bg-white p-4 text-center font-semibold shadow-sm">
