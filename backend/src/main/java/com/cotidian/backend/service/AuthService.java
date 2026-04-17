@@ -1,7 +1,7 @@
 package com.cotidian.backend.service;
 
 import com.cotidian.backend.database.models.UserEntity;
-import com.cotidian.backend.database.repository.UserRepository;
+import com.cotidian.backend.database.repository.IUserRepository;
 import com.cotidian.backend.dto.AutenticationDTO;
 import com.cotidian.backend.dto.LoginResponseDTO;
 import com.cotidian.backend.dto.RegisterDTO;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
+    private final IUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 

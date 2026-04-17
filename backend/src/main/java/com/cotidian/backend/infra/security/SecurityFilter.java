@@ -1,6 +1,6 @@
 package com.cotidian.backend.infra.security;
 
-import com.cotidian.backend.database.repository.UserRepository;
+import com.cotidian.backend.database.repository.IUserRepository;
 import com.cotidian.backend.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,9 +17,9 @@ import java.io.IOException;
 public class SecurityFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
-    private final UserRepository userRepository;
+    private final IUserRepository userRepository;
 
-    public SecurityFilter(TokenService tokenService, UserRepository userRepository) {
+    public SecurityFilter(TokenService tokenService, IUserRepository userRepository) {
         this.tokenService = tokenService;
         this.userRepository = userRepository;
     }

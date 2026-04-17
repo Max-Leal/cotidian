@@ -1,12 +1,13 @@
 spring:
+  config:
+    import: "optional:file:backend/.env[.properties],optional:file:.env[.properties]"
   application:
     name: backend
   datasource:
-    url: jdbc:postgresql://cotidian-db:5432/cotidian
-    username: cotidian
-    password: database
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
-
   jpa:
     hibernate:
       ddl-auto: update

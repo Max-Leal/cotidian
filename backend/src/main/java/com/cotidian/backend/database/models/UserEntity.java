@@ -38,6 +38,8 @@ public class UserEntity implements UserDetails {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @OneToMany(mappedBy = "user")
+    private List<HabitEntity> habits;
 
     @Override
     public String getPassword() {

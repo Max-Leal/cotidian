@@ -1,6 +1,6 @@
 package com.cotidian.backend.service;
 
-import com.cotidian.backend.database.repository.UserRepository;
+import com.cotidian.backend.database.repository.IUserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthorizationService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final IUserRepository userRepository;
 
-    public AuthorizationService(UserRepository userRepository) {
+    public AuthorizationService(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
